@@ -1,7 +1,7 @@
 const verified_db = require("./verified_db")
 const https = require("https");
 const failed_verify_msg = "Failed to verify with provided invoice number."
-const success_verify_msg = `Congratulations, you have been successfully verified. If you don't see all the channels now contact @${process.env.SUPPORT_CONTACT}`
+const success_verify_msg = `Congratulations, you have been successfully verified. If you don't see all the channels now contact ${process.env.SUPPORT_CONTACT}`
 
 module.exports = {
     VerifyInvoiceNumber: async function(msg, db, invoice_number, member) {
@@ -35,7 +35,7 @@ module.exports = {
                         if (!keyUsed)
                         {
                             // key is not used anywhere, add them to the database
-                            await verified_db.AddVerfiedPurchaser(db, invoice_number, msg.author.username);
+                            await verified_db.AddVerfiedPurchaser(db, msg.author.username, invoice_number);
                             var verified_role=member.guild.roles.cache.find(role => role.name === process.env.VERIFIED_ROLE_NAME);
                             member.roles.add(verified_role);
                             msg.channel.send(success_verify_msg);
@@ -49,7 +49,7 @@ module.exports = {
                             if (remaining_attempts > 0)
                                 msg.channel.send(`You have ${remaining_attempts} attempts remaining before you are locked out.`);
                             else 
-                                msg.channel.send(`You have been locked out. Contact @${process.env.SUPPORT_CONTACT} for support.`);
+                                msg.channel.send(`You have been locked out. Contact ${process.env.SUPPORT_CONTACT} for support.`);
                             return false;
                         }
                     }
@@ -62,7 +62,7 @@ module.exports = {
                     if (remaining_attempts > 0)
                         msg.channel.send(`You have ${remaining_attempts} attempts remaining before you are locked out.`);
                     else 
-                        msg.channel.send(`You have been locked out. Contact @${process.env.SUPPORT_CONTACT} for support.`);
+                        msg.channel.send(`You have been locked out. Contact ${process.env.SUPPORT_CONTACT} for support.`);
                     return false;
                 }
             });

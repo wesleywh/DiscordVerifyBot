@@ -3,13 +3,13 @@ const unity = require("../publisher_api/unity")
 const verifydb = require("../publisher_api/verified_db")
 
 module.exports = {
-    Verify: async function (db, msg, isAdmin)
+    Verify: async function (db, msg, isAdmin, member)
     {
         let isLocked = false;
         isLocked = await verifydb.GetUserIsLocked(db, msg.author.username);
         if (isLocked)
         {
-            msg.channel.send(`You have exceed your maximum attempts and are locked out. Contact @${process.env.SUPPORT_CONTACT} for support`);
+            msg.channel.send(`You have exceed your maximum attempts and are locked out. Contact ${process.env.SUPPORT_CONTACT} for support`);
         }
         else 
         {
@@ -18,12 +18,12 @@ module.exports = {
             if (key.startsWith("IN"))
             {
                 // is probably a unity invoice number
-                unity.VerifyInvoiceNumber(msg, db, key);
+                unity.VerifyInvoiceNumber(msg, db, key, member);
             }
             else 
             {
                 // most likely a gumroad license key
-                gumroad.VerifyLicenseKey(msg, db, key);
+                gumroad.VerifyLicenseKey(msg, db, key, member);
             }
         }
     },

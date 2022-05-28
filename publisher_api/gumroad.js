@@ -1,10 +1,10 @@
 const verified_db = require("./verified_db")
 const https = require("https");
 const failed_verify_msg = "Failed to verify with provided license key."
-const success_verify_msg = `Congratulations, you have been successfully verified. If you don't see all the channels now contact @${process.env.SUPPORT_CONTACT}`
+const success_verify_msg = `Congratulations, you have been successfully verified. If you don't see all the channels now contact ${process.env.SUPPORT_CONTACT}`
 
 module.exports = {
-    VerifyLicenseKey: async function(msg, db, key) {
+    VerifyLicenseKey: async function(msg, db, key, member) {
         const options = {
             hostname: 'api.gumroad.com',
             port: 443,
@@ -42,7 +42,7 @@ module.exports = {
                         if (remaining_attempts > 0)
                             msg.channel.send(`You have ${remaining_attempts} attempts remaining before you are locked out.`);
                         else 
-                            msg.channel.send(`You have been locked out. Contact @${process.env.SUPPORT_CONTACT} for support.`);
+                            msg.channel.send(`You have been locked out. Contact ${process.env.SUPPORT_CONTACT} for support.`);
                         return false;
                     }
                 }
@@ -54,7 +54,7 @@ module.exports = {
                     if (remaining_attempts > 0)
                         msg.channel.send(`You have ${remaining_attempts} attempts remaining before you are locked out.`);
                     else 
-                        msg.channel.send(`You have been locked out. Contact @${process.env.SUPPORT_CONTACT} for support.`);
+                        msg.channel.send(`You have been locked out. Contact ${process.env.SUPPORT_CONTACT} for support.`);
                     return false;
                 }
             });
